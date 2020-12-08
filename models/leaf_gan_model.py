@@ -116,7 +116,7 @@ class LeafGANModel(BaseModel):
 	# Get the binary mask of the "full leaf" area
 	def get_masking(self, tensor, threshold):
 		with torch.enable_grad():
-			probs, idx = self.netLFLSeg.forward(tensor)+
+			probs, idx = self.netLFLSeg.forward(tensor)
 			print('idx: ', idx)
 			self.netLFLSeg.backward(idx=0) # 0 for getting heatmap for "fully_leaf" class
 
