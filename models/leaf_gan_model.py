@@ -88,7 +88,7 @@ class LeafGANModel(BaseModel):
 			num_ftrs = self.segResNet.fc.in_features
 			self.segResNet.fc = nn.Linear(num_ftrs, 3) # Replace final layer with 3 outputs (full leaf, partial leaf, non-leaf)
 
-			load_path = '/path/to/LFLSeg_model.pth'
+			load_path = '/content/trained_resnet101_LFLSeg_v1_2.pth'
 			self.segResNet.load_state_dict(torch.load(load_path), strict=True)
 			self.segResNet.to(self.device)
 			self.segResNet.eval()
@@ -116,7 +116,8 @@ class LeafGANModel(BaseModel):
 	# Get the binary mask of the "full leaf" area
 	def get_masking(self, tensor, threshold):
 		with torch.enable_grad():
-			probs, idx = self.netLFLSeg.forward(tensor)
+			probs, idx = self.netLFLSeg.forward(tensor)+
+			print('idx: ', idx)
 			self.netLFLSeg.backward(idx=0) # 0 for getting heatmap for "fully_leaf" class
 
 		heat_map = self.netLFLSeg.generate(target_layer='layer4.2') # 'layer4.2' is the best for our experiment
