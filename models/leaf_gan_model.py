@@ -117,7 +117,6 @@ class LeafGANModel(BaseModel):
 	def get_masking(self, tensor, threshold):
 		with torch.enable_grad():
 			probs, idx = self.netLFLSeg.forward(tensor)
-			print('idx: ', idx)
 			self.netLFLSeg.backward(idx=0) # 0 for getting heatmap for "fully_leaf" class
 
 		heat_map = self.netLFLSeg.generate(target_layer='layer4.2') # 'layer4.2' is the best for our experiment
